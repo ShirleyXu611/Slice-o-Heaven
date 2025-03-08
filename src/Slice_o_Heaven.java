@@ -14,16 +14,38 @@ public class Slice_o_Heaven {
     public String drinks;
     private String orderID;
     private double orderTotal;
+    public long cardnumber;
     public final String DEF_ORDER_ID = "DEF-SOH-099";
     public final String DEF_PIZZA_INGREDIENTS = "Mozzarella Cheese";
     public final double DEF_ORDER_TOTAL = 15.00;
+    public final String blackListedNumber = "12345678901234";
     private String cardNumber;
-    private int cardLength;
     private int firstCardDigit;
     private String blacklistedNumber;
     private int lastFourDigits;
     public String cardNumberToDisplay;
-
+    public String ingredient;
+    public String size;
+    public String sidedish;
+    public String drink;
+    public String birthdate;
+    public String expiryDate;
+    public String strCardNumber;
+    public String extraCheese;
+    public int ingChoice1 = 0;
+    public int ingChoice2 = 0;
+    public int ingChoice3 = 0;
+    public int sizechoice = 0;
+    public int sideDishChoice = 0;
+    public int drinkChoice = 0;
+    public int age = 0;
+    public int cardLength =0 ;
+    public LocalDate date,now,expirydate;
+    public boolean Discount = false;
+    public String ing1;
+    public String ing2;
+    public String ing3;
+    Scanner input = new Scanner(System.in);
 
     public void specialOfTheDay(String pizzaOfTheDay,String sidesOfTheDay,String specialPrice){
         System.out.println("The special pizza of the day is:"+pizzaOfTheDay);
@@ -64,38 +86,146 @@ public class Slice_o_Heaven {
     }
 
 
+    private String convertToIngredient(int choice){
+        switch(choice){
+            case 1:
+                ingredient = "Mushroom";
+                break;
+            case 2:
+                ingredient = "Paprika";
+                break;
+            case 3:
+                ingredient = "Sun-dried tomatoes";
+                break;
+            case 4:
+                ingredient = "Chicken";
+                break;
+            case 5:
+                ingredient ="Pineapple";
+                break;
+        }
+        return ingredient;
+    }
+
+
+    private String convertToSize(int choice){
+        switch(choice){
+            case 1:
+                size = "Large";
+                break;
+            case 2:
+                size = "Medium";
+                break;
+            case 3:
+                size = "Small";
+                break;
+        }
+        return size;
+    }
+
+
+    private String convertToSideDish(int choice){
+        switch(choice){
+            case 1:
+                sidedish = "Calzone";
+                break;
+            case 2:
+                sidedish = "Garlic bread";
+                break;
+            case 3:
+                sidedish = "Chicken puff";
+                break;
+            case 4:
+                sidedish = "Muffin";
+                break;
+            case 5:
+                sidedish = "Nothing for me";
+        }
+        return sidedish;
+    }
+
+
+    private String convertToDrinks(int choice){
+        switch(choice){
+            case 1:
+                drink = "Coca cola";
+                break;
+            case 2:
+                drink = "Cold coffee";
+                break;
+            case 3:
+                drink = "Cocoa Drink";
+                break;
+            case 4:
+                drink = "No drinks for me";
+                break;
+        }
+        return drink;
+    }
+
+
     public void takeOrder(){
-        Scanner input1 = new Scanner(System.in);
-        System.out.println("Enter three ingredients for your pizza(use spaces to separate ingreients):");
-        String ing1 = input1.next();
-        String ing2 = input1.next();
-        String ing3 = input1.next();
-        Scanner input2 = new Scanner(System.in);
-        System.out.println("Enter size of pizza(Small,Medium,Large):");
-        String pizzaSize = input2.nextLine();
-        Scanner input3 = new Scanner(System.in);
+        do{
+            System.out.println("Please pick any three of the following ingredients:\n1.Mushroom\n2.Paprika\n3.Sun-dried tomatoes\n4.Chicken\n5.Pineapple\nEnter any three choices(1,2,3,...)separated with spaces:");
+            ingChoice1 = input.nextInt();
+            ingChoice2 = input.nextInt();
+            ingChoice3 = input.nextInt();
+            if(ingChoice1<1||ingChoice1>5||ingChoice2<1||ingChoice2>5||ingChoice3<1||ingChoice3>5){
+                System.out.println("Invalid choice(s).Please pick only from the given list:\n");
+            }
+        }while(ingChoice1<1||ingChoice1>5||ingChoice2<1||ingChoice2>5||ingChoice3<1||ingChoice3>5);
+        ing1 = convertToIngredient(ingChoice1);
+        ing2 = convertToIngredient(ingChoice2);
+        ing3 = convertToIngredient(ingChoice3);
+        System.out.println("You've chosen "+ing1+","+ing2+" and "+ing3+"\n");
+        
+
+        do{
+            System.out.println("What size should your pizza be?\n1.Large\n2.Medium\n3.Small\nEnter only one choice(1,2,or3):");
+            sizechoice = input.nextInt();
+            if(sizechoice<1||sizechoice>3){
+                System.out.println("Invalid choice(s).Please pick only from the given list:\n");
+            }
+        }while(sizechoice<1||sizechoice>3);
+        String pizzaSize = convertToSize(sizechoice);
+        System.out.println("You've chosen "+pizzaSize+"\n");
+
+
+        input.nextLine();
         System.out.println("Do your want extra cheese(Y/N):");
-        String extraCheese = input3.nextLine();
-        Scanner input4 = new Scanner(System.in);
-        System.out.println("Enter one side dish(calzone,Garlic bread,None):");
-        String sideDish = input4.nextLine();
-        Scanner input5 = new Scanner(System.in);
-        System.out.println("Enter drinks(Cold coffee,Coca drink,Coke,None):");
-        String drinks = input5.nextLine();
-        Scanner input6 = new Scanner(System.in);
+        extraCheese = input.nextLine();
+
+
+        do{
+            System.out.println("Following are the side dish that go well with your pizza:\n1. Calzone\n2. Garlic bread\n3. Chicken puff\n4. Muffin\n5. Nothing for me\nWhat would you like? Pick one (1, 2, 3,…):");
+            sideDishChoice = input.nextInt();
+            if(sideDishChoice<1||sideDishChoice>5){
+                System.out.println("Invalid choice(s).Please pick only from the given list:\n");
+            }
+        }while(sideDishChoice<1||sideDishChoice>5);
+        String sideDish = convertToSideDish(sideDishChoice);
+        System.out.println("You've chosen "+sideDish+"\n");
+
+
+        do{
+            System.out.println("Choose from one of the drinks below. We recommend Coca Cola:\n1. Coca Cola\n2. Cold coffee\n3. Cocoa Drink\n4. No drinks for me\nEnter your choice:");
+            drinkChoice = input.nextInt();
+            if(drinkChoice<1||drinkChoice>4){
+                System.out.println("Invalid choice(s).Please pick only from the given list:\n");
+            }
+        }while(drinkChoice<1||drinkChoice>4);
+        drinks = convertToDrinks(drinkChoice);
+        System.out.println("You've chosen "+drinks);
+        input.nextLine();
+
         System.out.println("Would you like the chance to pay only half for your order?(Y/N):");
-        String wantDiscount = input6.nextLine();
+        String wantDiscount = input.nextLine();
         if(wantDiscount.equals("Y")||wantDiscount.equals("y")){
             isItYourBirthday();
         }else{
             makeCardPayment();
         }
-        input1.close();
-        input2.close();
-        input3.close();
-        input4.close();
-        input5.close();
-        input6.close();
+
 
         System.out.println("Order accepted!");
         try {
@@ -106,67 +236,81 @@ public class Slice_o_Heaven {
         }
         makePizza();
         System.out.println("Order is ready for pickup!");
-        printRecipt();
-    }
-
-
-    public void isItYourBirthday(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter your birthdate(YYYY-MM-DD):");
-        String birthdate = input.nextLine();
-        int year = Integer.parseInt(birthdate.substring(0,4));
-        int mouth = Integer.parseInt(birthdate.substring(5,7));
-        int day = Integer.parseInt(birthdate.substring(8,10));
-        LocalDate date = LocalDate.of(year, mouth, day);
-        LocalDate now = LocalDate.now();
-        Period diff= Period.between(date,now);
-        if (diff.getYears()<18&&date.getDayOfYear()==now.getDayOfYear()){
-            System.out.println("Congradulations!You pay only half the price for your order.");
-        }else{
-            System.out.println("Too bad!You do not meet the conditions to get our 50% discount.");
-        }
+        toString();
         input.close();
     }
 
 
-    public void makeCardPayment(){
-        Scanner input1 = new Scanner(System.in);
-        System.out.println("Enter your card number:");
-        Long cardNumber = input1.nextLong();
-        Scanner input2 = new Scanner(System.in);
-        System.out.println("Enter your card's expiry date(YYYY-MM):");
-        String expiryDate = input2.nextLine();
-        Scanner input3 = new Scanner(System.in);
-        System.out.println("Enter your card's cvv number(the last three digits of your card number):");
-        String cvv = input3.nextLine();
-        processCardPayment(cardNumber,expiryDate,cvv);
-        input1.close();
-        input2.close();
-        input3.close();
+    public void isItYourBirthday(){
+        do{
+            System.out.println("Enter your birthdate(YYYY-MM-DD):");
+            birthdate = input.nextLine();
+            int year1 = Integer.parseInt(birthdate.substring(0,4));
+            int month1 = Integer.parseInt(birthdate.substring(5,7));
+            int day1 = Integer.parseInt(birthdate.substring(8,10));
+            date = LocalDate.of(year1, month1, day1);
+            now = LocalDate.now();
+            Period diff= Period.between(date,now);
+            age = diff.getYears();
+            if(age<5||age>120){
+                System.out.println("Invalid date.You are either too young or too dead to order.Please enter a valid date:\n");
+            }
+        }while(age<5||age>120);
+        if (age<18&&date.getDayOfYear()==now.getDayOfYear()){
+            System.out.println("Congradulations!You pay only half the price for your order.");
+            Discount = true;
+            makeCardPayment();
+            input.nextLine();
+        }else{
+            System.out.println("Too bad!You do not meet the conditions to get our 50% discount.");
+            makeCardPayment();
+        }
     }
 
 
-    public void processCardPayment(long cardNumber,String expiryString,String cvv){
-        String strCardNumber = Long.toString(cardNumber);
-        this.cardNumber=strCardNumber;
+    public void makeCardPayment(){
+        now = LocalDate.now();
+        do{
+            System.out.println("Enter your card number:");
+            cardnumber = input.nextLong();
+            input.nextLine();
+            System.out.println("Enter your card's expiry date(YYYY-MM-DD):");
+            expiryDate = input.nextLine();
+            int year2 = Integer.parseInt(expiryDate.substring(0,4));
+            int month2 = Integer.parseInt(expiryDate.substring(5,7));
+            int day2 = Integer.parseInt(expiryDate.substring(8,10));
+            expirydate = LocalDate.of(year2,month2,day2);
+            if(now.isAfter(expirydate)){
+                System.out.println("Your card is inavailble");
+                System.out.println("please enter another card");
+            }
+        }while(now.isAfter(expirydate));
+        System.out.println("please enter your cvv：");
+        String cvv = input.nextLine();
+        processCardPayment(cardnumber,expiryDate,cvv);
+    }
+
+
+    public void processCardPayment(long cardnumber,String expiryString,String cvv){
+        strCardNumber = Long.toString(cardnumber);
+        cardNumber=strCardNumber;
         cardLength=strCardNumber.length();
-        if(cardLength==14){
-            System.out.println("Card accepted.");
-        }else{
+        while(cardLength!=14||strCardNumber.equals(blackListedNumber)){
             System.out.println("Invalid cards.");
+            System.out.println("Enter your card number again:");
+            strCardNumber=input.nextLine();
+            cardLength=strCardNumber.length();
+        }
+        if(cardLength==14&&!(strCardNumber.equals(blackListedNumber))){
+            System.out.println("Card accepted.");
         }
         String cN1=strCardNumber.substring(0,1);
         firstCardDigit=Integer.parseInt(cN1);
-        if(strCardNumber.equals(blacklistedNumber)){
-            System.out.println("Card is blacklisted.Please use another card.");
-        
-        }
         String cN2=strCardNumber.substring(10,14);
         lastFourDigits=Integer.parseInt(cN2);
         StringBuilder sb = new StringBuilder(strCardNumber);
         sb.replace(1, 10, "*********");
-        String cardNumberToDisplay = sb.toString(); 
-        System.out.println(cardNumberToDisplay);
+        cardNumberToDisplay = sb.toString(); 
     }
 
 
@@ -181,9 +325,20 @@ public class Slice_o_Heaven {
     }
 
 
-    private void printRecipt() {
-        System.out.println("********RECEIPT********");
-        System.out.println("Order ID:" + orderID);
-        System.out.println("Order Total:" + orderTotal);
+    public String toString(){
+        StringBuilder receipt=new StringBuilder();
+        receipt.append("********RECEIPT********");
+        receipt.append("\nOrder ID:" + orderID);
+        receipt.append("\nCard Number:"+cardNumberToDisplay);
+        receipt.append("\nPizza Ingredients:"+ing1+" "+ing2+" "+ing3);
+        receipt.append("\nExtra Cheese:"+extraCheese);
+        receipt.append("\nSide Dish:"+sidedish);
+        receipt.append("\nDrinks:"+drinks);
+        if(Discount==true){
+            receipt.append("\nOrder Total:"+orderTotal*0.5);
+        }else{
+            receipt.append("\nOrder Total:"+orderTotal);
+        }
+        return receipt.toString();
     }
-}
+ }
