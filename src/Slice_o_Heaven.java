@@ -35,6 +35,7 @@ public class Slice_o_Heaven {
     public int ingChoice1 = 0;
     public int ingChoice2 = 0;
     public int ingChoice3 = 0;
+    public int ingChoice4 = 0;
     public int sizechoice = 0;
     public int sideDishChoice = 0;
     public int drinkChoice = 0;
@@ -45,7 +46,171 @@ public class Slice_o_Heaven {
     public String ing1;
     public String ing2;
     public String ing3;
+    public int choice = 0;
+    private static int orderIndex=0;
+    private static double totalorderPrice=0;
     Scanner input = new Scanner(System.in);
+
+
+
+    enum PizzaSelection{
+        PEPPERONI("Pepperoni", "Lots of pepperoni and extra cheese", 18),
+        HAWAIIAN("Hawaiian", "Pineapple, ham, and extra cheese", 22),
+        VEGGIE("Veggie", "Green pepper, onion, tomatoes, mushroom, and black olives", 25),
+        BBQ_CHICKEN("BBQ Chicken", "Chicken in BBQ sauce, bacon, onion, green pepper, and cheddar cheese", 35),
+        EXTRAVAGANZA("Extravaganza", "Pepperoni, ham, Italian sausage, beef, onions, green pepper, mushrooms, black olives, and extra cheese", 45);
+
+        private final String pizzaName;
+        private final String pizzaToppings;
+        private final int price;
+
+        PizzaSelection(String pizzaName,String pizzaToppings,int price){
+            this.pizzaName=pizzaName;
+            this.pizzaToppings=pizzaToppings;
+            this.price=price;
+        }
+
+        public String getPizzaName(){
+            return pizzaName;
+        }
+        public String getPizzaToppings(){
+            return pizzaToppings;
+        }
+        public int getPrice(){
+            return price;
+        }
+
+        @Override
+        public String toString(){
+            return pizzaName+"pizza with "+pizzaToppings+",for €"+price;
+        }
+        }
+
+
+    enum PizzaToppings{
+        HAM("Ham", 2), 
+        PEPPERONI("Pepperoni", 2),
+        BEEF("Beef", 2),
+        CHICKEN("Chicken", 2), 
+        SAUSAGE("Sausage", 2),
+        PINEAPPLE("Pineapple", 1),
+        ONION("Onion", 0.5), 
+        TOMATOES("Tomatoes", 0.4), 
+        GREEN_PEPPER("Green Pepper", 0.5), 
+        BLACK_OLIVES("Black Olives", 0.5), 
+        PINACH("Spinach", 0.5), 
+        CHEDDAR_CHEESE("Cheddar Cheese", 0.8), 
+        MOZZARELLA_CHEESE("Mozzarella Cheese", 0.8), 
+        FETA_CHEESE("Feta Cheese", 1), 
+        PARMESAN_CHEESE("Parmesan Cheese", 1);
+
+        private final String topping;
+        private final double toppingPrice;
+
+        PizzaToppings(String topping,double toppingPrice){
+            this.topping=topping;
+            this.toppingPrice=toppingPrice;
+        }
+
+        public String getTopping(){
+            return topping;
+        }
+        public double getToppingPrice(){
+            return toppingPrice;
+        }
+
+        @Override
+        public String toString(){
+            return "toppping: "+topping+"topping price: "+toppingPrice;
+        }
+    }
+
+    enum PizzaSize{
+        LARGE("Large", 10), 
+        MEDIUM("Medium", 5),
+        SMALL("Small", 0);
+
+        private final String pizzaSize;
+        private final int addToPizzaPrice;
+
+        PizzaSize(String pizzaSize,int addToPizzaPrice){
+            this.pizzaSize=pizzaSize;
+            this.addToPizzaPrice=addToPizzaPrice;
+        }
+
+        public String getPizzaSize(){
+            return pizzaSize;
+        }
+        public int getAddToPizzaPrice(){
+            return addToPizzaPrice;
+        }
+
+        @Override
+        public String toString(){
+            return "pizza size: "+pizzaSize+"add to pizza price: "+addToPizzaPrice;
+        }
+    }
+
+    enum SideDish{
+        CALZONE("Calzone", 15), 
+        CHICKEN_PUFF("Chicken Puff", 20),
+        MUFFIN("Muffin", 12),
+        NOTHING("No side dish", 0);
+
+        private final String sideDishName;
+        private final int addToPizzaPrice;
+
+        SideDish(String sideDishName,int addToPizzaPrice){
+            this.sideDishName=sideDishName;
+            this.addToPizzaPrice=addToPizzaPrice;
+        }
+
+        public String getSideDishName(){
+            return sideDishName;
+        }
+        public int getAddToPizzaPrice(){
+            return addToPizzaPrice;
+        }
+
+        @Override
+        public String toString(){
+            return "side dish name: "+sideDishName+"add to pizza price: "+addToPizzaPrice;
+        }
+        }
+
+        enum Drinks{
+            COCA_COLA("Coca Cola", 8), 
+            COCOA_DRINK("Cocoa Drink", 10),
+            NOTHING("No drinks", 0);
+
+            private final String drinkName;
+            private final int addToPizzaPrice;
+
+            Drinks(String drinkName,int addToPizzaPrice){
+                this.drinkName=drinkName;
+                this.addToPizzaPrice=addToPizzaPrice;
+            }
+
+            public String getDrinkName(){
+                return drinkName;
+            }
+            public int getAddToPizzaPrice(){
+                return addToPizzaPrice;
+            }
+
+            @Override
+            public String toString(){
+                return "drink name: "+drinkName+"add to pizza price: "+addToPizzaPrice;
+            }
+        }
+
+        public final double PIZZA_BASE_PRICE = 10.0;
+        static String[] pizzasOrdered = new String[10];
+        static String[] pizzaSizesOrdered = new String[10];
+        static String[] sideDishesOrdered = new String[20];
+        static String[] drinksOrdered = new String[20];
+
+
 
     public void specialOfTheDay(String pizzaOfTheDay,String sidesOfTheDay,String specialPrice){
         System.out.println("The special pizza of the day is:"+pizzaOfTheDay);
@@ -86,137 +251,123 @@ public class Slice_o_Heaven {
     }
 
 
-    private String convertToIngredient(int choice){
-        switch(choice){
-            case 1:
-                ingredient = "Mushroom";
-                break;
-            case 2:
-                ingredient = "Paprika";
-                break;
-            case 3:
-                ingredient = "Sun-dried tomatoes";
-                break;
-            case 4:
-                ingredient = "Chicken";
-                break;
-            case 5:
-                ingredient ="Pineapple";
-                break;
-        }
-        return ingredient;
-    }
-
-
-    private String convertToSize(int choice){
-        switch(choice){
-            case 1:
-                size = "Large";
-                break;
-            case 2:
-                size = "Medium";
-                break;
-            case 3:
-                size = "Small";
-                break;
-        }
-        return size;
-    }
-
-
-    private String convertToSideDish(int choice){
-        switch(choice){
-            case 1:
-                sidedish = "Calzone";
-                break;
-            case 2:
-                sidedish = "Garlic bread";
-                break;
-            case 3:
-                sidedish = "Chicken puff";
-                break;
-            case 4:
-                sidedish = "Muffin";
-                break;
-            case 5:
-                sidedish = "Nothing for me";
-        }
-        return sidedish;
-    }
-
-
-    private String convertToDrinks(int choice){
-        switch(choice){
-            case 1:
-                drink = "Coca cola";
-                break;
-            case 2:
-                drink = "Cold coffee";
-                break;
-            case 3:
-                drink = "Cocoa Drink";
-                break;
-            case 4:
-                drink = "No drinks for me";
-                break;
-        }
-        return drink;
-    }
-
-
     public void takeOrder(){
-        do{
-            System.out.println("Please pick any three of the following ingredients:\n1.Mushroom\n2.Paprika\n3.Sun-dried tomatoes\n4.Chicken\n5.Pineapple\nEnter any three choices(1,2,3,...)separated with spaces:");
-            ingChoice1 = input.nextInt();
-            ingChoice2 = input.nextInt();
-            ingChoice3 = input.nextInt();
-            if(ingChoice1<1||ingChoice1>5||ingChoice2<1||ingChoice2>5||ingChoice3<1||ingChoice3>5){
-                System.out.println("Invalid choice(s).Please pick only from the given list:\n");
-            }
-        }while(ingChoice1<1||ingChoice1>5||ingChoice2<1||ingChoice2>5||ingChoice3<1||ingChoice3>5);
-        ing1 = convertToIngredient(ingChoice1);
-        ing2 = convertToIngredient(ingChoice2);
-        ing3 = convertToIngredient(ingChoice3);
-        System.out.println("You've chosen "+ing1+","+ing2+" and "+ing3+"\n");
+        while (true){ 
+                System.out.println("Welcome to Slice-o-Heaven Pizzeria. Here's what we serve: ");
+                PizzaSelection pizzaSelection[]=PizzaSelection.values();
+                for(int i=0;i<PizzaSelection.values().length;i++){
+                    System.out.println((i+1)+". "+pizzaSelection[i]);
+                }
+                System.out.println((PizzaSelection.values().length+1)+". Custom Pizza with a maximum of 10 toppings that you choose.");
+                System.out.println("Please enter your choose(1-6): ");
+                do{
+                ingChoice1=input.nextInt();
+                if(ingChoice1<1||ingChoice1>6){
+                    System.out.println("Invalid choices. Please pick from the list: \n");
+                } 
+                }while(ingChoice1<1||ingChoice1>6);
         
+                if(ingChoice1>=1&&ingChoice1<=PizzaSelection.values().length){
+                    PizzaSelection selectedPizza=PizzaSelection.values()[ingChoice1-1];
+                    pizzasOrdered[orderIndex]=selectedPizza.getPizzaName()+": €"+selectedPizza.getPrice();
+                    totalorderPrice+=selectedPizza.getPrice();
+                }
+                else if(ingChoice1==PizzaSelection.values().length+1){
+                    System.out.println("Availble toppings: ");
+                    PizzaToppings pizzatoppings[]=PizzaToppings.values();
+                    for(int j=0;j<PizzaToppings.values().length;j++){
+                        System.out.println((j+1)+"."+pizzatoppings[j]);
+                    }
+                    StringBuilder customerToppingChoice=new StringBuilder("Custom Pizza with ");        
+                    double customPizzaPrice=PIZZA_BASE_PRICE;
+                    input.nextLine();
+                    String customToppings[];
+                    do{
+                    System.out.println("Please enter no more than 10 choices(separated by commas): ");
+                    customToppings=input.nextLine().split(",");
+                    if(customToppings.length>10){
+                        System.out.println("You entered more than 10 choices. Please try again: ");
+                    } 
+                    }while(customToppings.length>10);
+                        for(int i=0;i<customToppings.length;i++){
+                        int toppings=Integer.parseInt(customToppings[i]);
+                        for(int j=0;j<pizzatoppings.length;j++){
+                            if(toppings==(j+1)){
+                                customerToppingChoice.append(pizzatoppings[j].getTopping());
+                                customPizzaPrice+=pizzatoppings[j].getToppingPrice();
+                            }
+                        }
+                    }
+                    customerToppingChoice.append(",");
+                    pizzasOrdered[orderIndex]=customerToppingChoice.toString()+": €"+customPizzaPrice;
+                    totalorderPrice+=customPizzaPrice;
+                }
 
-        do{
-            System.out.println("What size should your pizza be?\n1.Large\n2.Medium\n3.Small\nEnter only one choice(1,2,or3):");
-            sizechoice = input.nextInt();
-            if(sizechoice<1||sizechoice>3){
-                System.out.println("Invalid choice(s).Please pick only from the given list:\n");
-            }
-        }while(sizechoice<1||sizechoice>3);
-        String pizzaSize = convertToSize(sizechoice);
-        System.out.println("You've chosen "+pizzaSize+"\n");
+                System.out.println("Availble pizza sizes: ");
+                PizzaSize pizzaSize[]=PizzaSize.values();
+                for(int i=0;i<PizzaSize.values().length;i++){
+                    System.out.println((i+1)+". "+pizzaSize[i]);
+                }
+                System.out.println("Please enter the pizza size: ");
+                do{
+                ingChoice2=input.nextInt();
+                if(ingChoice2<1||ingChoice2>PizzaSize.values().length){
+                    System.out.println("Invalid choices. Please pick from the list: " );
+                }
+                }while(ingChoice2<1||ingChoice2>PizzaSize.values().length);
+                if(ingChoice2>=1&&ingChoice2<=PizzaSize.values().length){
+                    PizzaSize selectedSize=PizzaSize.values()[ingChoice2-1];
+                    pizzaSizesOrdered[orderIndex]=selectedSize.getPizzaSize()+": €"+selectedSize.getAddToPizzaPrice();
+                    totalorderPrice+=selectedSize.getAddToPizzaPrice();
+                }
+
+                System.out.println("Available side dishes: ");
+                SideDish sidedish[]=SideDish.values();
+                for(int i=0;i<SideDish.values().length;i++){
+                    System.out.println((i+1)+". "+sidedish[i]);
+                }
+                System.out.println("Please enter the side dishes: ");
+                do{
+                ingChoice3=input.nextInt();
+                if(ingChoice3<1||ingChoice3>SideDish.values().length){
+                    System.out.println("Invalid choices. Please pick from the list: ");
+                }
+                }while(ingChoice3<1||ingChoice3>SideDish.values().length);
+                if(ingChoice3>=1&&ingChoice3<=SideDish.values().length){
+                    SideDish selectedSideDish=SideDish.values()[ingChoice3-1];
+                    sideDishesOrdered[orderIndex]=selectedSideDish.getSideDishName()+": €"+selectedSideDish.getAddToPizzaPrice();
+                    totalorderPrice+=selectedSideDish.getAddToPizzaPrice();
+                }
+
+                System.out.println("Available drinks: ");
+                Drinks drinks[]=Drinks.values();
+                for(int i=0;i<Drinks.values().length;i++){
+                    System.out.println((i+1)+". "+drinks[i]);
+                }
+                System.out.println("Please enter the drinks: ");
+                do{
+                    ingChoice4=input.nextInt();
+                    if(ingChoice4<1||ingChoice4>Drinks.values().length){
+                        System.out.println("Invalid choices. Please pick from the list: ");
+                    }
+                }while(ingChoice4<1||ingChoice4>Drinks.values().length);
+                if(ingChoice4>=1&&ingChoice4<=Drinks.values().length){
+                    Drinks selectedDrinks=Drinks.values()[ingChoice4-1];
+                    drinksOrdered[orderIndex]=selectedDrinks.getDrinkName()+": €"+selectedDrinks.getAddToPizzaPrice();
+                    totalorderPrice+=selectedDrinks.getAddToPizzaPrice();
+                }
+
+                orderIndex++;
+                input.nextLine();
+
+                System.out.println("Do you want to place another order? (Y/N): ");
+                String anotherOrder=input.nextLine();
+                if(anotherOrder.equals("N")){
+                    break;
+                    } 
+                }
 
 
-        input.nextLine();
-        System.out.println("Do your want extra cheese(Y/N):");
-        extraCheese = input.nextLine();
-
-
-        do{
-            System.out.println("Following are the side dish that go well with your pizza:\n1. Calzone\n2. Garlic bread\n3. Chicken puff\n4. Muffin\n5. Nothing for me\nWhat would you like? Pick one (1, 2, 3,…):");
-            sideDishChoice = input.nextInt();
-            if(sideDishChoice<1||sideDishChoice>5){
-                System.out.println("Invalid choice(s).Please pick only from the given list:\n");
-            }
-        }while(sideDishChoice<1||sideDishChoice>5);
-        String sideDish = convertToSideDish(sideDishChoice);
-        System.out.println("You've chosen "+sideDish+"\n");
-
-
-        do{
-            System.out.println("Choose from one of the drinks below. We recommend Coca Cola:\n1. Coca Cola\n2. Cold coffee\n3. Cocoa Drink\n4. No drinks for me\nEnter your choice:");
-            drinkChoice = input.nextInt();
-            if(drinkChoice<1||drinkChoice>4){
-                System.out.println("Invalid choice(s).Please pick only from the given list:\n");
-            }
-        }while(drinkChoice<1||drinkChoice>4);
-        drinks = convertToDrinks(drinkChoice);
-        System.out.println("You've chosen "+drinks);
-        input.nextLine();
 
         System.out.println("Would you like the chance to pay only half for your order?(Y/N):");
         String wantDiscount = input.nextLine();
